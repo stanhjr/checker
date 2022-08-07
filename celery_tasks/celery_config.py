@@ -5,7 +5,6 @@ config = {
     'task_acks_late': True,
     'task_annotations': {
         'celery_tasks.tasks.celery_email_check': {
-            # 'rate_limit': '100/m',
             'queue': 'email_checker'
         },
 

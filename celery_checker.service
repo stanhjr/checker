@@ -6,8 +6,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/root/checker/
-ExecStart=/root/checker/venv/bin/python /root/checker/run_celery.py
+WorkingDirectory=/root/testChecker/
+ExecStart=/root/testChecker/venv/bin/python /root/testChecker/run_celery.py
 RestartSec=10
 Restart=always
 

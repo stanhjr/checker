@@ -13,10 +13,22 @@ def with_session(function):
 
 
 class DataApi:
+    """
+    Database api class
+    """
     def __init__(self):
         self.session = session
 
     def set_available_amazon(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the amazon_check field to True
+        update social_count field (+=1)
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -26,6 +38,15 @@ class DataApi:
             s.commit()
 
     def set_available_twitter(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the twitter_check field to True
+        update social_count field (+=1)
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -35,6 +56,14 @@ class DataApi:
             s.commit()
 
     def set_available_yahoo(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the available_yahoo field to True
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -44,6 +73,14 @@ class DataApi:
             s.commit()
 
     def set_available_hotmail(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the available_hotmail field to True
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -53,6 +90,14 @@ class DataApi:
             s.commit()
 
     def set_available_gmail(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the available_gmail field to True
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -62,6 +107,15 @@ class DataApi:
             s.commit()
 
     def set_available_instagram(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the instagram_check field to True
+        update social_count field (+=1)
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -75,6 +129,15 @@ class DataApi:
             s.commit()
 
     def set_available_spotify(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the spotify_check field to True
+        update social_count field (+=1)
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -87,6 +150,15 @@ class DataApi:
             s.commit()
 
     def set_available_tumblr(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the tumblr_check field to True
+        update social_count field (+=1)
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -99,6 +171,15 @@ class DataApi:
             s.commit()
 
     def set_available_pinterest(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the pinterest_check field to True
+        update social_count field (+=1)
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -111,6 +192,15 @@ class DataApi:
             s.commit()
 
     def set_available_last_fm(self, email: str):
+        """
+        Updates or creates a record with a unique field email
+        sets the last_fm_check field to True
+        update social_count field (+=1)
+        saves changes to the database
+
+        :param email: unique insert field
+        :return:
+        """
         with self.session() as s:
             email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
             if not email_obj:
@@ -122,7 +212,13 @@ class DataApi:
             s.add(email_obj)
             s.commit()
 
-    def get_emails(self):
+    def get_emails(self) -> list:
+        """
+        Returns models sorted by social_count fields desc
+
+        :return list:
+        """
+
         with self.session() as s:
             return s.query(EmailChecker).order_by(EmailChecker.social_count.desc()).all()
 

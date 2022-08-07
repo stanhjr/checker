@@ -2,7 +2,12 @@ from core.db.db_api import data_api
 from celery_tasks.tasks import celery_email_check
 
 
-def save_results():
+def save_results() -> bool:
+    """
+    Writes the data received from the database to a text file
+
+    :return:
+    """
     with open("files/report.txt", "w") as f:
         for model in data_api.get_emails():
             result_record = model.email
@@ -21,6 +26,11 @@ def save_results():
 
 
 def start_checker_email():
+    """
+    Reads emails line by line from a text file and runs celery tasks
+
+    :return:
+    """
     with open('files/db.txt', 'r') as f:
         while True:
             email = f.readline()

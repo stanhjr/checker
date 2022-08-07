@@ -4,6 +4,12 @@ from core.db.db_api import data_api
 
 
 def social_media_checker(email: str):
+    """
+    Checking availability social media and save result to database
+
+    :param email: email to check
+    :return:
+    """
     queries = [email, ]
     platforms = [Platforms.LASTFM, Platforms.INSTAGRAM, Platforms.SPOTIFY, Platforms.PINTEREST, Platforms.SNAPCHAT,
                  Platforms.TUMBLR]

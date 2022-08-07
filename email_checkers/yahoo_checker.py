@@ -2,7 +2,14 @@ import requests
 import re
 
 
-def yahoo_checker(email):
+def yahoo_checker(email) -> bool:
+    """
+    Checks yahoo availability
+
+    :param email: email to check
+    :return: bool
+    """
+
     try:
         username = email.split("@")[0]
         host = email.split("@")[1]

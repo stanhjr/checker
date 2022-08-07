@@ -1,7 +1,14 @@
 import requests
 
 
-def hotmail_check(email):
+def hotmail_check(email) -> bool:
+    """
+    Checks hotmail availability
+
+    :param email: email to check
+    :return: bool
+    """
+
     availableText = "Neither"
     notAvailableText = "MSAccount"
     link = "https://odc.officeapps.live.com/odc/emailhrd/getidp?hm=0&emailAddress=" + email + "&_=1604288577990"

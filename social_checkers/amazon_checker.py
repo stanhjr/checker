@@ -10,6 +10,12 @@ g = s.get(link, headers=head)
 
 
 def amazon_check(email: str) -> bool:
+    """
+    Checking availability amazon
+
+    :param email: email to check
+    :return: bool
+    """
     xxx = {'customerName': 'Casein Nitrate', 'email': email, 'emailCheck': email, 'password': 'BirdyBirdySad012',
            'passwordCheck': 'BirdyBirdySad012'}
     cek = s.post(link, headers=head, data=xxx).text

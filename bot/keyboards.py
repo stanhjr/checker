@@ -2,6 +2,11 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 
 async def get_admin_keyboard():
+    """
+    Returns admin aiogram keyboard
+
+    :return: aiogram keyboard
+    """
     admin_keyboard_markup = ReplyKeyboardMarkup(resize_keyboard=True)
     get_report_btn = KeyboardButton(text="GET REPORT")
     clear_queue_btn = KeyboardButton(text='CLEAR QUEUE')

@@ -10,13 +10,6 @@ config = {
         },
 
     },
-    'accept_content': ['json', 'pickle', 'application/x-python-serialize'],
-    'task_serializer': 'pickle',
-    'result_serializer': 'pickle',
-    'event_serializer': 'pickle',
-    'result_expires': 7200,
-    'task_compression': 'gzip',
-    'result_compression': 'gzip',
     'task_default_queue': 'email_checker',
     'redis_max_connections': 2,
     'broker_transport_options': {

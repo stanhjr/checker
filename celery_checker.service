@@ -1,0 +1,15 @@
+[Unit]
+Description=celery_email_checker
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/email_checker
+ExecStart=/root/email_checker/venv/bin/python3 /root/email_checker/run_celery.py
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

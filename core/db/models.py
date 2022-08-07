@@ -11,7 +11,7 @@ dotenv_path = ('.env')
 load_dotenv(dotenv_path)
 
 Base = declarative_base()
-db_settings = os.getenv("DATABASE_HOST")
+db_settings = "postgresql://postgres:example@localhost:5432/check_email"
 engine = create_engine(db_settings, pool_size=50, max_overflow=0, echo=False, echo_pool=True, pool_pre_ping=True)
 
 

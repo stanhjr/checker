@@ -38,7 +38,8 @@ def start_checker_email():
             email = email.replace("\t", "")
             email = email.replace(" ", "")
             if email.find("@hotmail.com") > 0 or email.find("@yahoo.com") > 0 or email.find("@gmail.com") > 0:
-                celery_email_check.apply_async(kwargs=dict(email=email))
+                # celery_email_check.apply_async(kwargs=dict(email=email))
+                celery_email_check.delay(email)
             if not email:
                 break
     return

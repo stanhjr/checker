@@ -11,7 +11,6 @@ from core.schemas import EmailCheckerScraper
 
 app = Celery('tasks')
 config['broker_url'] = 'redis://localhost:6379'
-config['result_backend'] = 'redis://localhost:6379'
 app.config_from_object(config)
 
 

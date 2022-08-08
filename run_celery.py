@@ -5,9 +5,6 @@ if __name__ == "__main__":
     argv = [
         'worker',
         '--loglevel=DEBUG',
-        '--without-heartbeat',
-        '--without-mingle',
-        '--without-gossip',
         '--queues=email_checker'
     ]
     app.worker_main(argv)

@@ -27,7 +27,6 @@ def celery_email_check(email):
 
     :return
     """
-
     headers = {
         "X-API-KEY": "38045cad-2eae-4ae0-9c39-7e1f2da9ef31"
     }
@@ -36,7 +35,6 @@ def celery_email_check(email):
     result = json.loads(r.text)
     data = result.get('data')
     if not data:
-        print(email)
         return 'not data'
     checker = EmailCheckerScraper(**data)
     if checker.deliverable is not True:

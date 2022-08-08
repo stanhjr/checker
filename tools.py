@@ -30,7 +30,7 @@ def start_checker_email():
             email = email.replace("\n", "")
             email = email.replace("\t", "")
             email = email.replace(" ", "")
-            celery_email_check.apply_async(kwargs=dict(email=email))
+            celery_email_check.delay(email)
             if not email:
                 break
 

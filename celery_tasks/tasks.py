@@ -4,13 +4,20 @@ from celery import Celery
 import requests
 
 from celery_tasks.celery_config import config
+from celery.signals import task_prerun
 from core.db.db_api import data_api
+from core.db.models import engine
 from core.schemas import EmailCheckerScraper
 
 app = Celery('tasks')
 config['broker_url'] = 'redis://localhost:6379'
 config['result_backend'] = 'redis://localhost:6379'
 app.config_from_object(config)
+
+
+@task_prerun.connect
+def on_task_init(*args, **kwargs):
+    engine.dispose()
 
 
 @app.task

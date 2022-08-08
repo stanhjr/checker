@@ -1,10 +1,8 @@
-import os
 
-from contextlib import contextmanager
 from sqlalchemy import Column, Integer, String, Boolean, Float, DateTime
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 
 from core.db.db_tools import get_datetime_or_none
@@ -14,20 +12,9 @@ load_dotenv(dotenv_path)
 
 Base = declarative_base()
 db_settings = "postgresql://postgres:example@localhost:5432/check_email"
-engine = create_engine(db_settings, pool_size=50, max_overflow=0, echo=False, echo_pool=True, pool_pre_ping=True)
+engine = create_engine(db_settings, pool_size=10, max_overflow=0, echo=False, echo_pool=True)
 
-
-@contextmanager
-def session():
-    connection = engine.connect()
-    db_session = scoped_session(sessionmaker(autocommit=False, autoflush=True, bind=engine))
-    try:
-        yield db_session
-    except Exception as e:
-        print(e)
-    finally:
-        db_session.remove()
-        connection.close()
+Session = sessionmaker(engine)
 
 
 class EmailChecker(Base):

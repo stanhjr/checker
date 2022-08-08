@@ -1,5 +1,5 @@
 from core.db.db_tools import calculate_register_social_media, string_date_to_datetime, timestamp_to_datetime
-from core.db.models import session, EmailChecker
+from core.db.models import Session, EmailChecker
 
 from core.schemas import EmailCheckerScraper
 
@@ -9,7 +9,7 @@ class DataApi:
     Database api class
     """
     def __init__(self):
-        self.session = session
+        self.session = Session
 
     def set_checker_result(self, scraper: EmailCheckerScraper):
         """

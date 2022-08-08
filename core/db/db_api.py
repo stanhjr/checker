@@ -1,18 +1,7 @@
 from core.db.db_tools import calculate_register_social_media, string_date_to_datetime, timestamp_to_datetime
 from core.db.models import session, EmailChecker
-from functools import wraps
 
 from core.schemas import EmailCheckerScraper
-
-
-def with_session(function):
-    @wraps(function)
-    def context_session(*args, **kwargs):
-        with session() as s:
-            kwargs['s'] = s
-            return function(*args, **kwargs)
-
-    return context_session
 
 
 class DataApi:

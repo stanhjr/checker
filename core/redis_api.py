@@ -6,7 +6,7 @@ class RedisApi:
     Class for working with redis
     """
     def __init__(self):
-        self.redis_session = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.redis_session = redis.StrictRedis(host='localhost', port=6379, db=5)
 
     def clear_db(self) -> bool:
         """

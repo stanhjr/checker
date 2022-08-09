@@ -1,7 +1,7 @@
 config = {
     'imports': ('celery_tasks.tasks',),
     'database_engine_options': {'echo': False},
-    'worker_concurrency': 4,
+    'worker_concurrency': 2,
     'task_acks_late': True,
     'task_annotations': {
         'celery_tasks.tasks.celery_email_check': {

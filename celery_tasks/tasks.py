@@ -36,12 +36,10 @@ def celery_email_check(email):
     if not data:
         return 'not data'
     checker = EmailCheckerScraper(**data)
-    if checker.deliverable is False and checker.domain_details.registered is True:
+    if checker.domain_details.registered is not True:
+        return f"{email} -> this host not registered"
+    if checker.deliverable is False:
         data_api.set_checker_result(scraper=checker)
         return True
     return f"{email} -> this email not deliverable"
-
-
-
-
 

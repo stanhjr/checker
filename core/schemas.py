@@ -1,9 +1,12 @@
-from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 from pydantic import BaseModel
 
 
 class SocialMedia(BaseModel):
+    registered: Optional[bool]
+
+
+class DomainDetails(BaseModel):
     registered: Optional[bool]
 
 
@@ -73,3 +76,4 @@ class EmailCheckerScraper(BaseModel):
     account_details: AccountDetails
     breach_details: BreachDetails
     history: History
+    domain_details: DomainDetails

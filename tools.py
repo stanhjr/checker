@@ -37,5 +37,5 @@ def start_checker_email():
 
 if __name__ == '__main__':
     # celery_email_check.delay("stanhjrpower@gmail.com")
-    # start_checker_email()
-    save_results()
+    start_checker_email()
+    # save_results()

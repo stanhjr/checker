@@ -25,6 +25,8 @@ def check_email_valid(email: str) -> bool:
         return True
     if email.find('aol.com') > 0:
         return True
+    if email.find('outlook.com') > 0:
+        return True
     return False
 
 

@@ -4,7 +4,11 @@ config = {
     'worker_concurrency': 4,
     'task_acks_late': True,
     'task_annotations': {
-        'celery_tasks.tasks.celery_email_check': {
+        # 'celery_tasks.tasks.celery_email_check': {
+        #     'rate_limit': '200/m',
+        #     'queue': 'email_checker'
+        # },
+        'celery_tasks.tasks.check_email': {
             'rate_limit': '200/m',
             'queue': 'email_checker'
         },

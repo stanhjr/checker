@@ -77,3 +77,9 @@ class EmailCheckerScraper(BaseModel):
     breach_details: BreachDetails
     history: History
     domain_details: DomainDetails
+
+
+class EmailCheckerIpQuality(BaseModel):
+    valid: Optional[bool]
+    domain_velocity: Optional[str]
+

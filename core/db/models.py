@@ -1,4 +1,3 @@
-
 from sqlalchemy import Column, Integer, String, Boolean, Float, DateTime
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,7 +10,7 @@ dotenv_path = ('.env')
 load_dotenv(dotenv_path)
 
 Base = declarative_base()
-db_settings = "postgresql://postgres:example@localhost:5432/check_email"
+db_settings = "postgresql://postgres:example@localhost:5432/check_email_2"
 engine = create_engine(db_settings, pool_size=30, max_overflow=0, echo=False, echo_pool=True)
 
 Session = sessionmaker(engine)
@@ -73,11 +72,16 @@ class EmailChecker(Base):
     first_breach = Column(DateTime)
     first_seen = Column(DateTime)
     social_count = Column(Integer, default=0)
+    check_social = Column(Boolean, default=False)
+    available = Column(Boolean, default=False)
+    incorrect = Column(Boolean)
 
     def get_social_list(self):
         social_list = []
         columns = self.__table__.columns.keys()
         for key in columns:
+            if key in ["check_social", "available"]:
+                continue
             if getattr(self, key) is True:
                 social_list.append(key)
         return social_list

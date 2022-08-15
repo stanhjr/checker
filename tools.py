@@ -1,7 +1,7 @@
 import json
 
 from core.db.db_api import data_api
-from celery_tasks.tasks import celery_email_check
+from celery_tasks.tasks import check_email
 
 
 def save_results() -> bool:
@@ -30,12 +30,12 @@ def start_checker_email():
             email = email.replace("\n", "")
             email = email.replace("\t", "")
             email = email.replace(" ", "")
-            celery_email_check.apply_async(kwargs=dict(email=email))
+            check_email.apply_async(kwargs=dict(email=email))
             if not email:
                 break
 
 
 if __name__ == '__main__':
     # celery_email_check.delay("stanhjrpower@gmail.com")
-    start_checker_email()
-    # save_results()
+    # start_checker_email()
+    save_results()

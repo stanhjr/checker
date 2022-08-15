@@ -1,15 +1,48 @@
 from core.db.db_tools import calculate_register_social_media, string_date_to_datetime, timestamp_to_datetime
 from core.db.models import Session, EmailChecker
 
-from core.schemas import EmailCheckerScraper
+from core.schemas import EmailCheckerScraper, EmailCheckerIpQuality
 
 
 class DataApi:
     """
     Database api class
     """
+
     def __init__(self):
         self.session = Session
+
+    def check_email(self, email: str) -> bool:
+        """
+        Returns True if record in database
+
+        :param email: email to be checked
+
+        :return bool: bool
+        """
+        with self.session() as s:
+            email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
+            if email_obj:
+                return True
+            return False
+
+    def check_social(self, email) -> bool:
+        with self.session() as s:
+            email_obj = s.query(EmailChecker).filter(EmailChecker.email == email).first()
+            if not email_obj:
+                return False
+            if email_obj.check_social is True:
+                return False
+            return True
+
+    def set_email_parse_result(self, email: str, available: bool, incorrect: bool = None):
+        with self.session() as s:
+            email_obj = EmailChecker(email=email)
+            email_obj.incorrect = incorrect
+            email_obj.available = available
+            s.add(email_obj)
+            s.commit()
+            return True
 
     def set_checker_result(self, scraper: EmailCheckerScraper):
         """
@@ -18,7 +51,6 @@ class DataApi:
         saves changes to the database
 
         :param scraper: unique insert field
-        :param response_dict:
         :return:
         """
         with self.session() as s:
@@ -77,6 +109,7 @@ class DataApi:
             email_obj.first_breach = string_date_to_datetime(scraper.breach_details.first_breach)
             email_obj.first_seen = timestamp_to_datetime(scraper.history.first_seen)
             email_obj.social_count = calculate_register_social_media(scraper.account_details.dict())
+            email_obj.check_social = True
             s.add(email_obj)
             s.commit()
             return True
@@ -94,10 +127,12 @@ class DataApi:
     def get_results(self) -> list:
         """
         Gets emails parse results from database
+
         :return list:
         """
         with self.session() as s:
-            qs = s.query(EmailChecker).order_by(EmailChecker.social_count.desc()).all()
+            qs = s.query(EmailChecker).filter(EmailChecker.available == True).order_by(
+                EmailChecker.social_count.desc()).all()
             return [model.get_model_dict() for model in qs]
 
 

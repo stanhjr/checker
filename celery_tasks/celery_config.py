@@ -8,7 +8,7 @@ config = {
         #     'rate_limit': '200/m',
         #     'queue': 'email_checker'
         # },
-        'celery_tasks.tasks.check_email': {
+        'celery_tasks.check_email': {
             'rate_limit': '200/m',
             'queue': 'email_checker'
         },

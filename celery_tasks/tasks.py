@@ -1,33 +1,22 @@
 import json
-from logging import info
 
 from celery import Celery
 import requests
 
 from celery_tasks.celery_config import config
 from celery.signals import task_prerun
+
+from celery_tasks.tools import check_email_valid
+from celery_tasks.tools import converting_email
 from core.db.db_api import data_api
 from core.db.models import engine
-from core.schemas import EmailCheckerScraper, EmailCheckerIpQuality
+from core.schemas import EmailCheckerScraper
+from core.schemas import EmailCheckerIpQuality
+from email_checkers import yahoo_checker
 
 app = Celery('tasks')
 config['broker_url'] = 'redis://localhost:6379/5'
 app.config_from_object(config)
-
-
-def check_email_valid(email: str) -> bool:
-    email = email.strip()
-    if email.find('@gmail.com') > 0:
-        return True
-    if email.find('@yahoo.com') > 0:
-        return True
-    if email.find('@hotmail.com') > 0:
-        return True
-    if email.find('aol.com') > 0:
-        return True
-    if email.find('outlook.com') > 0:
-        return True
-    return False
 
 
 @task_prerun.connect
@@ -35,7 +24,7 @@ def on_task_init(*args, **kwargs):
     engine.dispose()
 
 
-def celery_email_check(email):
+def seon_email_check(email):
     """
     Checking email and save available email to database
 
@@ -69,36 +58,56 @@ def celery_email_check(email):
 @app.task
 def check_email(email):
     """
-     Checking email and save available email to database
+    Checking email, save available email to database, run seon_email_check
 
     :param email: str:
 
-    :return: str
+    :return:
     """
-
-    if not check_email_valid(email):
+    email_convert = converting_email(email=email, type_email="@yahoo.com")
+    if not email_convert:
         return f'This email {email} not valid'
 
-    if data_api.check_email(email):
-        return f'This email {email} already checked'
+    if data_api.check_email(email_convert):
+        return f'This email {email_convert} already checked'
 
-    api_key = '3kIfZsJL2HvmIRqqTIa3vmfN0xAt9v8P'
-    r = requests.get(f"https://www.ipqualityscore.com/api/json/email/{api_key}/{email}?timeout=30")
-    result = json.loads(r.text)
-    checker = EmailCheckerIpQuality(**result)
+    if not yahoo_checker(email_convert):
+        return f'This email -> {email_convert} is not available'
+    seon_email_check(email=email_convert)
 
-    if checker.domain_velocity is None:
-        data_api.set_email_parse_result(email=email, available=False, incorrect=True)
-        return f'This email -> {email} is not valid'
 
-    if checker.valid is True:
-        data_api.set_email_parse_result(email=email, available=False, incorrect=False)
-        return f'This email -> {email} is not available'
-
-    if checker.valid is False:
-        data_api.set_email_parse_result(email=email, available=True, incorrect=False)
-        info(f'This email -> {email} available')
-        celery_email_check(email=email)
+# def check_email(email):
+#     """
+#     Checking email and save available email to database
+#
+#     :param email: str:
+#
+#     :return: str
+#     """
+#
+#     if not check_email_valid(email):
+#         return f'This email {email} not valid'
+#
+#     if data_api.check_email(email):
+#         return f'This email {email} already checked'
+#
+#     api_key = '3kIfZsJL2HvmIRqqTIa3vmfN0xAt9v8P'
+#     r = requests.get(f"https://www.ipqualityscore.com/api/json/email/{api_key}/{email}?timeout=30")
+#     result = json.loads(r.text)
+#     checker = EmailCheckerIpQuality(**result)
+#
+#     if checker.domain_velocity is None:
+#         data_api.set_email_parse_result(email=email, available=False, incorrect=True)
+#         return f'This email -> {email} is not valid'
+#
+#     if checker.valid is True:
+#         data_api.set_email_parse_result(email=email, available=False, incorrect=False)
+#         return f'This email -> {email} is not available'
+#
+#     if checker.valid is False:
+#         data_api.set_email_parse_result(email=email, available=True, incorrect=False)
+#         info(f'This email -> {email} available')
+#         seon_email_check(email=email)
 
 
 if __name__ == '__main__':

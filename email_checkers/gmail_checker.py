@@ -8,6 +8,6 @@ def gmail_checker(email) -> bool:
     if len(request.cookies) > 0:
         return True
 
-
+print(gmail_checker("stanhjrpow22222er@gmail.com"))
 
 

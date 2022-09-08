@@ -13,6 +13,7 @@ from core.db.models import engine
 from core.schemas import EmailCheckerScraper
 from core.schemas import EmailCheckerIpQuality
 from email_checkers import yahoo_checker
+from email_checkers import gmail_checker
 
 app = Celery('tasks')
 config['broker_url'] = 'redis://localhost:6379/5'
@@ -30,10 +31,6 @@ def seon_email_check(email):
 
     :return
     """
-
-    if not data_api.check_social(email):
-        return f'This email {email} is not checked!'
-
     if not check_email_valid(email):
         return f'This email {email} not valid'
 
@@ -64,16 +61,21 @@ def check_email(email):
 
     :return:
     """
-    email_convert = converting_email(email=email, type_email="@yahoo.com")
+    email_convert = converting_email(email=email, type_email="@gmail.com")
+
     if not email_convert:
         return f'This email {email} not valid'
 
     if data_api.check_email(email_convert):
         return f'This email {email_convert} already checked'
 
-    if not yahoo_checker(email_convert):
+    # if not yahoo_checker(email_convert):
+    #     return f'This email -> {email_convert} is not available'
+    if gmail_checker(email_convert):
         return f'This email -> {email_convert} is not available'
+    data_api.set_email_parse_result(email=email_convert, available=True, incorrect=False)
     seon_email_check(email=email_convert)
+
 
 
 # def check_email(email):

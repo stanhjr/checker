@@ -30,7 +30,7 @@ def start_checker_email():
             email = email.replace("\n", "")
             email = email.replace("\t", "")
             email = email.replace(" ", "")
-            check_email.delay(email=email)
+            check_email.apply_async(kwargs=dict(email=email))
             if not email:
                 break
 

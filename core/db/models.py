@@ -10,7 +10,7 @@ dotenv_path = ('.env')
 load_dotenv(dotenv_path)
 
 Base = declarative_base()
-db_settings = "postgresql://postgres:example@localhost:5432/check_email_2"
+db_settings = "postgresql://postgres:example@localhost:5432/check_email_3"
 engine = create_engine(db_settings, pool_size=30, max_overflow=0, echo=False, echo_pool=True)
 
 Session = sessionmaker(engine)
